@@ -1,6 +1,7 @@
 import 'package:amazon_clone/common/widgets/custom_button.dart';
 import 'package:amazon_clone/common/widgets/custom_textfield.dart';
 import 'package:amazon_clone/constants/global_variable.dart';
+import 'package:amazon_clone/features/auth/services/auth_services.dart';
 import 'package:flutter/material.dart';
 
 enum Auth {
@@ -26,12 +27,23 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
 
+  final AuthServices _authServices = AuthServices();
+
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
     super.dispose();
+  }
+
+  void signUp() {
+    _authServices.signUpUser(
+      context: context,
+      email: _emailController.text,
+      password: _passwordController.text,
+      name: _nameController.text,
+    );
   }
 
   @override
@@ -101,7 +113,14 @@ class _AuthScreenState extends State<AuthScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        CustomButton(text: "Sign Up", onPressed: () {})
+                        CustomButton(
+                          text: "Sign Up",
+                          onPressed: () {
+                            if (_signUpFormKey.currentState!.validate()) {
+                              signUp();
+                            }
+                          },
+                        )
                       ],
                     ),
                   ),
@@ -149,7 +168,10 @@ class _AuthScreenState extends State<AuthScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        CustomButton(text: "Sign In", onPressed: () {})
+                        CustomButton(
+                          text: "Sign In",
+                          onPressed: () {},
+                        )
                       ],
                     ),
                   ),
